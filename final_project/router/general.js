@@ -83,7 +83,23 @@ res.send(filtered_books);
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+
+  for (let key in books) {
+    console.log(key + ": " + JSON.stringify(books[key]));
+  }
+
+  const isbn = req.params.isbn;
+  let filtered_books = [];
+
+  for (let key in books) {
+    if (books[key].isbn === isbn) {
+        filtered_books.push(books[key.reviews]);
+    }
+}
+
+res.send(filtered_books);
+
+  //return res.status(300).json({message: "Yet to be implemented"});
 });
 
 module.exports.general = public_users;
