@@ -30,7 +30,6 @@ public_users.get('/isbn/:isbn',function (req, res) {
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   // Write your code here
-  // Extract the author from the request URL
   for (let key in books) {
     console.log(key + ": " + JSON.stringify(books[key]));
   }
@@ -51,7 +50,22 @@ res.send(filtered_books);
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
   //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+
+  for (let key in books) {
+    console.log(key + ": " + JSON.stringify(books[key]));
+  }
+
+  const title = req.params.title;
+  let filtered_books = [];
+
+  for (let key in books) {
+    if (books[key].title === title) {
+        filtered_books.push(books[key]);
+    }
+}
+res.send(filtered_books);
+
+  //return res.status(300).json({message: "Yet to be implemented"});
 });
 
 //  Get book review
