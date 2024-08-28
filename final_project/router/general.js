@@ -14,27 +14,38 @@ public_users.post("/register", (req,res) => {
 public_users.get('/',function (req, res) {
   //Write your code here
   res.send(JSON.stringify({books}, null, 4));
-  return res.status(300).json({message: "Yet to be implemented"});
+  //return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   //Extract the ISBN from the request URL
-  const isbn = req.params.isbn;
-  let filtered_users = users.filter((user) => user.isbn === isbn);
-  res.send(filtered_users);
+  //const isbn = req.params.isbn;
+  //let filtered_users = users.filter((user) => user.isbn === isbn);
+  //res.send(filtered_users);
   return res.status(300).json({message: "Yet to be implemented"});
  });
  
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-  //Extract the author from the request URL
-  // const author = req.params.author;
-  // let filtered_books = books.filter((book) => book.author === author);
-  // res.send(filtered_books);
-  // return res.status(300).json({message: "Yet to be implemented"});
+  // Write your code here
+  // Extract the author from the request URL
+  for (let key in books) {
+    console.log(key + ": " + JSON.stringify(books[key]));
+  }
+
+  const author = req.params.author;
+  let filtered_books = [];
+
+  for (let key in books) {
+    if (books[key].author === author) {
+        filtered_books.push(books[key]);
+    }
+}
+
+res.send(filtered_books);
+  //return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get all books based on title
