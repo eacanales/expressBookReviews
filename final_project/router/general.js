@@ -83,7 +83,6 @@ res.send(filtered_books);
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   //Write your code here
-
   for (let key in books) {
     console.log(key + ": " + JSON.stringify(books[key]));
   }
@@ -93,7 +92,7 @@ public_users.get('/review/:isbn',function (req, res) {
 
   for (let key in books) {
     if (books[key].isbn === isbn) {
-        filtered_books.push(books[key.reviews]);
+        filtered_books.push(books[key].reviews);
     }
 }
 
