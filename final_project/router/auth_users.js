@@ -63,7 +63,16 @@ regd_users.post("/login", (req,res) => {
   //return res.status(300).json({message: "Yet to be implemented. Working on this now!! "});
 });
 
-// Add a book review
+// Add a book review - POST
+regd_users.put("/auth/review/:isbn", (req, res) => {
+  
+
+
+});
+
+
+// Add a book review - PUT
+
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
   //Extract reviews parameter from request URL
