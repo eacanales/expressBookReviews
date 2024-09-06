@@ -66,7 +66,31 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
+  //Extract reviews parameter from request URL
+  const reviews = req.params.reviews;
+  let user = users[reviews]; // Retrieve user object associated with reviews
+
   return res.status(300).json({message: "Yet to be implemented this review"});
+});
+
+
+
+// Get a book review from user authenticated
+regd_users.get('/review/:isbn',function (req, res) {
+    //Write your code here
+    for (let key in books) {
+      console.log(key + ": " + JSON.stringify(books[key]));
+    }
+  
+    const isbn = req.params.isbn;
+    let filtered_books = [];
+  
+    for (let key in books) {
+      if (books[key].isbn === isbn) {
+          filtered_books.push(books[key].reviews);
+      }
+    }
+  res.send(filtered_books);
 });
 
 module.exports.authenticated = regd_users;
