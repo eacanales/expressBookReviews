@@ -79,38 +79,18 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         books[key].reviews = [];
       }
 
-      
-
- // Añadir la nueva reseña al array de reseñas del libro
+      // Añadir la nueva reseña al array de reseñas del libro
       books[key].reviews.push(newReview);
 
- // Enviar una respuesta indicando que la reseña fue agregada
+      // Enviar una respuesta indicando que la reseña fue agregada
       return res.status(200).json({ message: "Review successfully added", book: books[key] });
-}
-}
-
-// Si el libro no fue encontrado, envía un mensaje de error
+  }
+} 
+      // Si el libro no fue encontrado, envía un mensaje de error
       if (!bookFound) {
       return res.status(404).json({ message: "Book not found" });
-}
+  }
 });     
-
-      
- 
-
-
-// Add a book review - PUT
-
-//regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  //Extract reviews parameter from request URL
-  //const reviews = req.params.reviews;
-  //let user = users[reviews]; // Retrieve user object associated with reviews
-
-  //return res.status(300).json({message: "Yet to be implemented this review"});
-//});
-
-
 
 // Get a book review from user authenticated
 regd_users.get('/review/:isbn',function (req, res) {
