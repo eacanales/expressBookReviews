@@ -44,14 +44,33 @@ public_users.post("/register", (req,res) => {
   // return res.status(300).json({message: "Yet to be implemented"});
 //});
 
-// Get the book list available in the shop
-public_users.get('/',function (req, res) {
+// TASK 1 Get the book list available in the shop
+
+//public_users.get('/',function (req, res) {
   //Write your code here
-  res.send(JSON.stringify({books}, null, 4));
+  //res.send(JSON.stringify({books}, null, 4));
   //return res.status(300).json({message: "Yet to be implemented"});
+//});
+
+// TASK 10 Using Async-await
+public_users.get('/', async function (req, res) {
+  try {
+    const getBooks = await new Promise((resolve, reject) => {
+      if (books) {
+        resolve(books);
+      } else {
+        reject("No books available");
+      }
+    });
+
+    res.send(JSON.stringify({getBooks}, null, 4));
+  } catch (error) {
+    
+    res.status(500).send(error);
+  }
 });
 
-// Get book details based on ISBN.
+// TASK 2: Get book details based on ISBN.
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   
