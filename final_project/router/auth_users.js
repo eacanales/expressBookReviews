@@ -94,27 +94,26 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 
 // Delete a review
 regd_users.delete('/auth/review/:isbn', function (req, res) {
-  // Mostrar todos los libros en la consola (opcional, para depuración)
+  // Display all the books in the console.
   for (let key in books) {
     console.log(key + ": " + JSON.stringify(books[key]));
   }
 
-  // Obtener el ISBN de la solicitud
+  // Get ISBN
   const isbn = req.params.isbn;
   let filtered_books = [];
-  let found = false;  // Bandera para saber si se encontró el libro
+  let found = false;  // to know if the book has been found
 
-  // Buscar el libro por ISBN y eliminar sus reseñas
+  // Look for the book and delete the reviews
   for (let key in books) {
     if (books[key].isbn === isbn) {
         filtered_books.push(books[key].reviews);
-        books[key].reviews = [];  // Vaciar el array de reseñas
-        found = true;  // Cambiar la bandera a verdadero cuando se encuentra el libro
+        books[key].reviews = [];  
+        found = true;  
     }
   }
 
-  // Responder dependiendo de si se encontró o no el libro
-  if (found) {
+    if (found) {
     res.send("Reviews have been deleted for the book with ISBN: " + isbn);
   } else {
     res.status(404).send("Book not found");
