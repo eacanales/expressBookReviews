@@ -71,67 +71,186 @@ public_users.get('/', async function (req, res) {
 });
 
 // TASK 2: Get book details based on ISBN.
-public_users.get('/isbn/:isbn',function (req, res) {
+//public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
   
-  for (let key in books) {
-    console.log(key + ": " + JSON.stringify(books[key]));
-  }
+  //for (let key in books) {
+    //console.log(key + ": " + JSON.stringify(books[key]));
+  //}
 
-  const isbn = req.params.isbn;
-  let filtered_books = [];
+  //const isbn = req.params.isbn;
+  //let filtered_books = [];
 
-  for (let key in books) {
-    if (books[key].isbn === isbn) {
-        filtered_books.push(books[key]);
-    }
-}
+  //for (let key in books) {
+    //if (books[key].isbn === isbn) {
+        //filtered_books.push(books[key]);
+    //}
+//}
 
-res.send(filtered_books);
+//res.send(filtered_books);
 
   //return res.status(300).json({message: "Yet to be implemented"});
- });
- 
-// Get book details based on author
-public_users.get('/author/:author',function (req, res) {
-  // Write your code here
-  for (let key in books) {
-    console.log(key + ": " + JSON.stringify(books[key]));
-  }
+ //});
 
-  const author = req.params.author;
-  let filtered_books = [];
+// TASK 11 with promise
+public_users.get('/isbn/:isbn', function (req, res) {
+  // Encapsular la lógica de búsqueda en una promesa
+  const getBookByIsbn = new Promise((resolve, reject) => {
+    const isbn = req.params.isbn;
+    let filtered_books = [];
 
-  for (let key in books) {
-    if (books[key].author === author) {
+    // Recorrer los libros para buscar por ISBN
+    for (let key in books) {
+      console.log(key + ": " + JSON.stringify(books[key]));
+
+      if (books[key].isbn === isbn) {
         filtered_books.push(books[key]);
+      }
     }
-}
 
-res.send(filtered_books);
-  //return res.status(300).json({message: "Yet to be implemented"});
+    // Si se encuentra el libro, resolvemos la promesa
+    if (filtered_books.length > 0) {
+      resolve(filtered_books);
+    } else {
+      // Si no se encuentra, rechazamos la promesa
+      reject("Book not found");
+    }
+  });
+
+  // Manejar la promesa con .then() y .catch()
+  getBookByIsbn
+    .then((filtered_books) => {
+      // Enviar el libro encontrado
+      res.send(filtered_books);
+    })
+    .catch((error) => {
+      // Manejar el error si no se encuentra el libro
+      res.status(404).send(error);
+    });
 });
 
-// Get all books based on title
-public_users.get('/title/:title',function (req, res) {
+ 
+// TASK 3: Get book details based on author
+//public_users.get('/author/:author',function (req, res) {
+  // Write your code here
+  //for (let key in books) {
+    //console.log(key + ": " + JSON.stringify(books[key]));
+  //}
+
+  //const author = req.params.author;
+  //let filtered_books = [];
+
+  //for (let key in books) {
+    //if (books[key].author === author) {
+        //filtered_books.push(books[key]);
+    //}
+//}
+
+//res.send(filtered_books);
+  //return res.status(300).json({message: "Yet to be implemented"});
+//});
+
+// TASK 12: 
+public_users.get('/author/:author', async function (req, res) {
+  try {
+    // Obtener el autor desde los parámetros de la solicitud
+    const author = req.params.author;
+
+    // Crear una promesa para simular la operación asíncrona de filtrado
+    const getBooksByAuthor = new Promise((resolve, reject) => {
+      let filtered_books = [];
+
+      // Recorrer los libros y buscar por autor
+      for (let key in books) {
+        console.log(key + ": " + JSON.stringify(books[key]));
+
+        if (books[key].author === author) {
+          filtered_books.push(books[key]);
+        }
+      }
+
+      // Resolver si se encuentra al menos un libro
+      if (filtered_books.length > 0) {
+        resolve(filtered_books);
+      } else {
+        reject("Author not found");
+      }
+    });
+
+    // Esperar a que se resuelva la promesa
+    const booksByAuthor = await getBooksByAuthor;
+
+    // Enviar los libros filtrados
+    res.send(booksByAuthor);
+  } catch (error) {
+    // Manejar cualquier error (si el autor no se encuentra)
+    res.status(404).send(error);
+  }
+});
+
+
+// TASK 4:  Get all books based on title
+//public_users.get('/title/:title',function (req, res) {
   //Write your code here
 
-  for (let key in books) {
-    console.log(key + ": " + JSON.stringify(books[key]));
-  }
+  //for (let key in books) {
+    //console.log(key + ": " + JSON.stringify(books[key]));
+  //}
 
-  const title = req.params.title;
-  let filtered_books = [];
+  //const title = req.params.title;
+  //let filtered_books = [];
 
-  for (let key in books) {
-    if (books[key].title === title) {
-        filtered_books.push(books[key]);
-    }
-}
-res.send(filtered_books);
+  //for (let key in books) {
+    //if (books[key].title === title) {
+        //filtered_books.push(books[key]);
+    //}
+//}
+//res.send(filtered_books);
 
   //return res.status(300).json({message: "Yet to be implemented"});
+//});
+
+// TASK 13 - PROMISE
+public_users.get('/title/:title', function (req, res) {
+  // Crear una promesa que encapsule la lógica de filtrado
+  const getBooksByTitle = new Promise((resolve, reject) => {
+    const title = req.params.title;
+    let filtered_books = [];
+
+    // Recorrer los libros y buscar por título
+    for (let key in books) {
+      console.log(key + ": " + JSON.stringify(books[key]));
+
+      if (books[key].title === title) {
+        filtered_books.push(books[key]);
+      }
+    }
+
+    // Resolver la promesa si se encuentran libros
+    if (filtered_books.length > 0) {
+      resolve(filtered_books);
+    } else {
+      // Rechazar la promesa si no se encuentra el libro por título
+      reject("Title not found");
+    }
+  });
+
+  // Manejar la promesa con .then() y .catch()
+  getBooksByTitle
+    .then((filtered_books) => {
+      // Enviar los libros filtrados
+      res.send(filtered_books);
+    })
+    .catch((error) => {
+      // Manejar el error si no se encuentra el libro
+      res.status(404).send(error);
+    });
 });
+
+
+
+
+
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
