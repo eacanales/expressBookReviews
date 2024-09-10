@@ -92,9 +92,49 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   }
 });     
 
-// Get a book review from user authenticated
-regd_users.get('/review/:isbn',function (req, res) {
+// Delete a review
+regd_users.delete('/auth/review/:isbn', function (req, res) {
+    const isbn = req.params.isbn;
+    const reviewToDelete = req.body.review; // Asumiendo que el cuerpo de la solicitud contiene el campo "review"
+  
+    // Recorre todos los libros para encontrar el que tiene el ISBN correspondiente
+    let bookFound = false;
+  
+    for (let key in books) {
+      if (books[key].isbn === isbn) {
+        bookFound = true;
+  
+        // Si existen reseñas para este libro
+        if (books[key].reviews && Array.isArray(books[key].reviews)) {
+          // Filtrar el array de reseñas para eliminar la que coincide
+          books[key].reviews = books[key].reviews.filter(review => review !== reviewToDelete);
+  
+          // Enviar una respuesta indicando que la reseña fue eliminada
+          return res.status(200).json({ message: "Review successfully deleted", book: books[key] });
+        } else {
+          // Si no hay reseñas
+          return res.status(404).json({ message: "No reviews found for this book" });
+        }
+      }
+    }
+  
+    // Si no se encuentra el libro
+    if (!bookFound) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+  });
+
+// GET
+regd_users.get('/auth/isbn/:isbn',function (req, res) {
     //Write your code here
+    res.send(JSON.stringify({books}, null, 4));
+    //return res.status(300).json({message: "Yet to be implemented"});
+  });
+  
+  // Get book details based on ISBN.
+  regd_users.get('/isbn/:isbn',function (req, res) {
+    //Write your code here
+    
     for (let key in books) {
       console.log(key + ": " + JSON.stringify(books[key]));
     }
@@ -104,9 +144,10 @@ regd_users.get('/review/:isbn',function (req, res) {
   
     for (let key in books) {
       if (books[key].isbn === isbn) {
-          filtered_books.push(books[key].reviews);
+          filtered_books.push(books[key]);
       }
-    }
+  }
+  
   res.send(filtered_books);
 });
 
